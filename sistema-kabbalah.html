@@ -1,0 +1,955 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sistema Semanal · Canal Kabbalah</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:#08060E; --bg2:#0E0B18; --bg3:#141020;
+  --surface:#1A1530; --surface2:#201B3A;
+  --gold:#C8921A; --gold2:#E8B030; --gold3:#F8D060;
+  --gold-pale:rgba(200,146,26,0.1);
+  --violet:#7048D8; --violet2:#9068F0; --violet-pale:rgba(112,72,216,0.12);
+  --teal:#18A8A0; --teal-pale:rgba(24,168,160,0.1);
+  --rose:#C83858; --rose-pale:rgba(200,56,88,0.1);
+  --green:#38A870; --green-pale:rgba(56,168,112,0.1);
+  --blue:#3868D8; --blue-pale:rgba(56,104,216,0.1);
+  --text:#E8E0D0; --text2:#7A7068; --text3:#3A3428;
+  --border:rgba(200,146,26,0.1); --border2:rgba(200,146,26,0.2);
+  --hb:rgba(144,104,240,0.15);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;font-size:13px;line-height:1.75;overflow-x:hidden;}
+
+/* STAR BG */
+body::before{content:'';position:fixed;inset:0;background:
+  radial-gradient(1px 1px at 15% 25%,rgba(200,146,26,0.5) 0%,transparent 100%),
+  radial-gradient(1px 1px at 78% 12%,rgba(200,146,26,0.3) 0%,transparent 100%),
+  radial-gradient(1px 1px at 45% 60%,rgba(255,255,255,0.15) 0%,transparent 100%),
+  radial-gradient(1px 1px at 88% 78%,rgba(144,104,240,0.3) 0%,transparent 100%),
+  radial-gradient(2px 2px at 32% 88%,rgba(200,146,26,0.2) 0%,transparent 100%),
+  radial-gradient(1px 1px at 62% 35%,rgba(255,255,255,0.1) 0%,transparent 100%);
+pointer-events:none;z-index:0;}
+
+/* NAV */
+.nav{position:sticky;top:0;background:rgba(8,6,14,0.96);backdrop-filter:blur(16px);border-bottom:1px solid var(--border2);height:54px;display:flex;align-items:center;padding:0 20px;gap:5px;z-index:300;overflow-x:auto;position:relative;}
+.nav::-webkit-scrollbar{display:none;}
+.nav-brand{font-family:'Cormorant Garamond',serif;font-size:15px;font-weight:700;color:var(--gold2);white-space:nowrap;margin-right:12px;flex-shrink:0;letter-spacing:.5px;}
+.nd{padding:5px 13px;border-radius:20px;border:1px solid var(--border2);background:transparent;color:var(--text2);font-family:'DM Sans',sans-serif;font-size:11px;font-weight:600;cursor:pointer;white-space:nowrap;transition:all .18s;letter-spacing:.3px;}
+.nd:hover{background:var(--violet);color:#fff;border-color:var(--violet);}
+.nd.active{background:var(--gold);color:var(--bg);border-color:var(--gold);}
+
+/* PAGES */
+.page{display:none;position:relative;z-index:1;}
+.page.on{display:block;}
+.w{max-width:740px;margin:0 auto;padding:44px 22px 100px;}
+
+/* PAGE HEADER */
+.ph{margin-bottom:36px;padding-bottom:24px;border-bottom:1px solid var(--border);}
+.ph-eye{font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--text3);margin-bottom:6px;}
+.ph-title{font-family:'Cormorant Garamond',serif;font-size:clamp(40px,6vw,62px);font-weight:700;line-height:1;color:var(--text);margin-bottom:6px;}
+.ph-title em{font-style:italic;color:var(--gold2);}
+.ph-desc{font-size:13px;color:var(--text2);max-width:500px;margin-bottom:14px;}
+.tags{display:flex;gap:6px;flex-wrap:wrap;}
+.tag{font-size:9px;font-weight:700;letter-spacing:.5px;padding:3px 10px;border-radius:20px;text-transform:uppercase;}
+.tg{background:var(--gold-pale);color:var(--gold2);border:1px solid rgba(200,146,26,0.2);}
+.tv{background:var(--violet-pale);color:var(--violet2);border:1px solid rgba(112,72,216,0.2);}
+.tt{background:var(--teal-pale);color:var(--teal);border:1px solid rgba(24,168,160,0.2);}
+.tr{background:var(--rose-pale);color:var(--rose);border:1px solid rgba(200,56,88,0.2);}
+.tn{background:var(--green-pale);color:var(--green);border:1px solid rgba(56,168,112,0.2);}
+.tb{background:var(--blue-pale);color:var(--blue);border:1px solid rgba(56,104,216,0.2);}
+
+/* SUMMARY */
+.sumrow{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:36px;}
+.sum{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:14px;text-align:center;}
+.sum-n{font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:700;margin-bottom:1px;}
+.sum-l{font-size:9px;color:var(--text2);letter-spacing:.5px;text-transform:uppercase;}
+
+/* GROUP */
+.grp{margin-bottom:32px;}
+.grp-lbl{font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--text3);display:flex;align-items:center;gap:10px;margin-bottom:14px;}
+.grp-lbl::after{content:'';flex:1;height:1px;background:var(--border);}
+
+/* BLOCK */
+.blk{display:grid;grid-template-columns:80px 1fr;margin-bottom:2px;}
+.blk-time{padding:11px 14px 11px 0;border-right:1px solid var(--border);text-align:right;}
+.bt-m{font-family:'Cormorant Garamond',serif;font-size:15px;font-weight:600;line-height:1;}
+.bt-d{font-size:9px;color:var(--text3);margin-top:2px;}
+.blk-body{padding:9px 0 9px 16px;position:relative;}
+.blk-body::before{content:'';position:absolute;left:-1px;top:16px;width:7px;height:7px;border-radius:50%;transform:translateX(-50%);border:2px solid var(--bg);}
+.blk-title{font-weight:600;font-size:13px;color:var(--text);display:flex;align-items:center;gap:7px;flex-wrap:wrap;margin-bottom:2px;}
+.blk-detail{font-size:12px;color:var(--text2);line-height:1.65;}
+
+/* dot colors */
+.bk-wake .blk-body::before,.bk-wake .bt-m{color:var(--gold);}.bk-wake .blk-body::before{background:var(--gold);}
+.bk-morn .blk-body::before{background:var(--teal);}.bk-morn .bt-m{color:var(--teal);}
+.bk-work .blk-body::before{background:var(--blue);}.bk-work .bt-m{color:var(--blue);}
+.bk-home .blk-body::before{background:var(--green);}.bk-home .bt-m{color:var(--green);}
+.bk-rest .blk-body::before{background:var(--violet2);}.bk-rest .bt-m{color:var(--violet2);}
+.bk-night .blk-body::before{background:var(--text3);}.bk-night .bt-m{color:var(--text2);}
+
+/* PROJECT BLOCK */
+.blk.proj{background:linear-gradient(135deg,var(--surface),var(--surface2));border:1px solid var(--border2);border-radius:12px;margin:10px 0;overflow:hidden;}
+.blk.proj .blk-time{border-right:1px solid rgba(255,255,255,0.06);padding:14px;}
+.blk.proj .bt-m{color:var(--gold2);}
+.blk.proj .bt-d{color:rgba(255,255,255,0.2);}
+.blk.proj .blk-body{padding:14px 16px 14px 18px;}
+.blk.proj .blk-body::before{background:var(--gold2);border-color:var(--surface);}
+.blk.proj .blk-title{color:var(--text);}
+.blk.proj .blk-detail{color:rgba(232,224,208,0.5);}
+
+/* STEPS */
+.steps{margin-top:12px;display:flex;flex-direction:column;gap:8px;}
+.step{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.07);border-radius:8px;padding:11px 13px;}
+.step-head{display:flex;align-items:flex-start;gap:8px;margin-bottom:4px;}
+.step-n{width:20px;height:20px;border-radius:5px;background:var(--gold);color:var(--bg);font-size:9px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+.step-n.v{background:var(--violet2);}
+.step-title{font-size:12px;font-weight:600;color:var(--text);line-height:1.3;}
+.step-body{font-size:11px;color:rgba(232,224,208,0.45);line-height:1.65;padding-left:28px;}
+
+/* PROMPT */
+.prompt{background:rgba(0,0,0,0.45);border:1px solid rgba(144,104,240,0.2);border-radius:8px;padding:14px;margin-top:8px;position:relative;}
+.prompt-lbl{font-size:8px;letter-spacing:2px;text-transform:uppercase;color:var(--violet2);margin-bottom:6px;display:block;font-family:'DM Sans',sans-serif;}
+.prompt-text{font-family:'Courier New',monospace;font-size:11px;color:rgba(144,200,168,0.85);white-space:pre-wrap;line-height:1.7;}
+.cp{position:absolute;top:10px;right:10px;background:var(--hb);border:1px solid rgba(144,104,240,0.3);color:var(--violet2);font-size:9px;font-weight:700;padding:3px 8px;border-radius:4px;cursor:pointer;letter-spacing:.5px;transition:all .2s;font-family:'DM Sans',sans-serif;}
+.cp:hover{background:var(--violet);color:#fff;border-color:var(--violet);}
+.cp.ok{background:var(--green-pale);border-color:var(--green);color:var(--green);}
+
+/* PLATFORM PILLS */
+.pub-row{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px;}
+.pp{font-size:10px;font-weight:700;padding:3px 10px;border-radius:20px;letter-spacing:.3px;}
+.pp-yt{background:rgba(255,48,48,0.12);color:#FF5858;border:1px solid rgba(255,48,48,0.2);}
+.pp-tt{background:rgba(72,216,208,0.12);color:#48D8D0;border:1px solid rgba(72,216,208,0.2);}
+.pp-fb{background:rgba(56,104,216,0.12);color:#6888F0;border:1px solid rgba(56,104,216,0.2);}
+.pp-ig{background:rgba(200,64,192,0.12);color:#D860D0;border:1px solid rgba(200,64,192,0.2);}
+
+/* CALLOUT */
+.co{border-radius:7px;padding:9px 12px;margin-top:8px;font-size:12px;line-height:1.6;}
+.co-gold{background:var(--gold-pale);border-left:2px solid var(--gold);color:var(--text2);}
+.co-violet{background:var(--violet-pale);border-left:2px solid var(--violet2);color:var(--text2);}
+.co-rose{background:var(--rose-pale);border-left:2px solid var(--rose);color:var(--text2);}
+.co-green{background:var(--green-pale);border-left:2px solid var(--green);color:var(--text2);}
+.co-teal{background:var(--teal-pale);border-left:2px solid var(--teal);color:var(--text2);}
+
+/* OUTPUT */
+.output{display:inline-flex;align-items:center;gap:5px;background:var(--gold-pale);border:1px solid rgba(200,146,26,0.2);border-radius:5px;padding:5px 10px;font-size:11px;color:var(--gold2);font-weight:600;margin-top:8px;}
+
+/* HEBREW SYMBOL */
+.hb-deco{font-size:11px;color:var(--violet2);margin-left:4px;opacity:.7;}
+
+/* REST BANNER */
+.rest-banner{background:linear-gradient(135deg,var(--surface),var(--surface2));border:1px solid var(--border2);border-radius:14px;padding:32px;margin-bottom:28px;text-align:center;}
+.rb-sym{font-size:52px;margin-bottom:12px;display:block;}
+.rb-title{font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:700;color:var(--gold2);margin-bottom:6px;}
+.rb-sub{font-size:13px;color:var(--text2);max-width:380px;margin:0 auto;}
+
+/* CONTENT MAP */
+.cm{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px;margin-bottom:20px;}
+.cm-title{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--text3);margin-bottom:16px;}
+.cm-row{display:grid;grid-template-columns:90px 1fr;gap:10px;padding:8px 0;border-bottom:1px solid var(--border);font-size:12px;align-items:start;}
+.cm-row:last-child{border:none;}
+.cm-day{font-weight:700;color:var(--text2);}
+.cm-items{color:var(--text2);line-height:1.7;}
+
+/* SEFIRA GRID */
+.sefira-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:20px;}
+.sefira-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:16px;}
+.sf-hb{font-size:22px;color:var(--gold2);font-weight:700;margin-bottom:2px;font-family:'Cormorant Garamond',serif;}
+.sf-name{font-size:11px;font-weight:600;color:var(--text);margin-bottom:4px;letter-spacing:.5px;}
+.sf-desc{font-size:11px;color:var(--text2);line-height:1.6;}
+.sf-topic{font-size:10px;color:var(--violet2);margin-top:6px;font-style:italic;}
+
+/* VERSE */
+.verse{background:var(--surface);border-left:2px solid var(--gold);border-radius:0 10px 10px 0;padding:14px 18px;margin-top:28px;}
+.verse-hb{font-size:18px;color:var(--violet2);margin-bottom:4px;letter-spacing:2px;}
+.verse-text{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:15px;color:var(--text2);line-height:1.6;margin-bottom:4px;}
+.verse-ref{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--text3);}
+
+@media(max-width:540px){
+  .blk{grid-template-columns:64px 1fr;}
+  .sumrow{grid-template-columns:repeat(2,1fr);}
+  .sefira-grid{grid-template-columns:1fr;}
+}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-brand">🔯 Kabbalah · Sistema</div>
+  <button class="nd active" onclick="show('lun',this)">Lun</button>
+  <button class="nd" onclick="show('mar',this)">Mar</button>
+  <button class="nd" onclick="show('mie',this)">Mié</button>
+  <button class="nd" onclick="show('jue',this)">Jue</button>
+  <button class="nd" onclick="show('vie',this)">Vie</button>
+  <button class="nd" onclick="show('sab',this)">Sáb</button>
+  <button class="nd" onclick="show('dom',this)">Dom 🌿</button>
+  <button class="nd" onclick="show('ref',this)">📋 Referencia</button>
+  <button class="nd" onclick="show('sefirot',this)">🔯 Sefirot</button>
+</nav>
+
+<!-- ══════════════ LUNES ══════════════ -->
+<div class="page on" id="page-lun"><div class="w">
+  <div class="ph">
+    <div class="ph-eye">Día 1 · Semana de trabajo · Investigación</div>
+    <div class="ph-title">Lu<em>nes</em></div>
+    <div class="ph-desc">El día editorial. Investigas los temas Kabbalah de la semana, generas el guión del video largo #1 y produces los clips de Veo 3.</div>
+    <div class="tags">
+      <span class="tag tv">🔯 Investigación Kabbalah</span>
+      <span class="tag tg">✍️ Guión Largo #1</span>
+      <span class="tag tn">📤 Short #1 → 4 plataformas</span>
+    </div>
+  </div>
+
+  <div class="sumrow">
+    <div class="sum"><div class="sum-n" style="color:var(--gold2)">3h</div><div class="sum-l">Proyecto</div></div>
+    <div class="sum"><div class="sum-n" style="color:#6888F0">9h</div><div class="sum-l">Trabajo</div></div>
+    <div class="sum"><div class="sum-n" style="color:#48D8C8">1.5h</div><div class="sum-l">Hogar</div></div>
+    <div class="sum"><div class="sum-n" style="color:#9068F0">7.5h</div><div class="sum-l">Sueño</div></div>
+  </div>
+
+  <div class="grp">
+    <div class="grp-lbl">🌅 Mañana · 5:45 – 8:30</div>
+
+    <div class="blk bk-wake">
+      <div class="blk-time"><div class="bt-m">5:45</div><div class="bt-d">15 min</div></div>
+      <div class="blk-body"><div class="blk-title">⏰ Despertar</div><div class="blk-detail">Agua en la mesa de noche. 2 min sin celular. Levántate despacio.</div></div>
+    </div>
+    <div class="blk bk-wake">
+      <div class="blk-time"><div class="bt-m">6:00</div><div class="bt-d">25 min</div></div>
+      <div class="blk-body"><div class="blk-title">🚿 Baño + vestirse</div><div class="blk-detail">Rutina completa antes del desayuno.</div></div>
+    </div>
+    <div class="blk bk-morn">
+      <div class="blk-time"><div class="bt-m">6:25</div><div class="bt-d">20 min</div></div>
+      <div class="blk-body"><div class="blk-title">🍳 Desayuno con tu pareja</div><div class="blk-detail">Sin pantallas. Tiempo de pareja antes de arrancar.</div></div>
+    </div>
+
+    <div class="blk proj">
+      <div class="blk-time"><div class="bt-m">6:45</div><div class="bt-d">1 hora</div></div>
+      <div class="blk-body">
+        <div class="blk-title">🔯 PROYECTO · Investigación Kabbalah + Guión Largo #1</div>
+        <div class="blk-detail">Tu bloque más estratégico. Mente fresca para las decisiones editoriales.</div>
+        <div class="steps">
+          <div class="step">
+            <div class="step-head"><div class="step-n v">1</div><div class="step-title">YouTube: busca tendencias Kabbalah (5 min)</div></div>
+            <div class="step-body">Escribe en el buscador: "kabbalah", "árbol de la vida", "sefirot", "ein sof", "zohar", "letras hebreas". Anota las 5 sugerencias automáticas — son búsquedas reales de hoy.</div>
+          </div>
+          <div class="step">
+            <div class="step-head"><div class="step-n v">2</div><div class="step-title">Super Grok · Prompt de investigación semanal Kabbalah (10 min)</div></div>
+            <div class="step-body">Pega este prompt exacto:</div>
+            <div class="prompt">
+              <span class="prompt-lbl">Prompt · Investigación Semanal · Kabbalah · Grok</span>
+              <button class="cp" onclick="cp(this)">COPIAR</button>
+              <div class="prompt-text">Eres experto en Kabbalah clásica y espiritualidad en español. Analiza los temas de Kabbalah, misticismo judío y espiritualidad esotérica más buscados y virales en YouTube, TikTok y Facebook en español en los últimos 7 días. Dame:
+
+1. Top 5 temas Kabbalah con mayor demanda actual. Para cada uno: el ángulo emocional que funciona (transformación personal, misterio, revelación, sanación, autoconocimiento) y por qué conecta con el público general.
+
+2. 1 tema para video largo de 6–8 min (enseñanza profunda con aplicación práctica a la vida cotidiana).
+
+3. 4 temas para Shorts independientes de 60 seg (uno por cada categoría: Sefirot, letras hebreas, Ein Sof/Zohar, y numerología cabalística).
+
+4. 5 fórmulas de título que están generando clics en YouTube en el nicho espiritual/esotérico en español ahora mismo.
+
+5. 10 hashtags con mayor engagement en el nicho Kabbalah/espiritualidad en español.
+
+6. 1 ángulo "puente" — cómo conectar un concepto Kabbalah clásico con una situación emocional cotidiana del espectador (ej: "Kéter y el propósito de vida", "Maljut y el dinero", "Tiferet y las relaciones").
+
+Nicho: Kabbalah clásica (Árbol de la Vida, Sefirot, Torah) explicada para público general curioso en espiritualidad. Sin jerga exclusiva, lenguaje accesible pero con profundidad.</div>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-head"><div class="step-n">3</div><div class="step-title">TÚ DECIDES · Elige los temas (5 min)</div></div>
+            <div class="step-body">De la lista de Grok elige: 1 tema para el video largo + 4 temas para Shorts independientes. Anótalos en papel con el ángulo emocional de cada uno. Eso es tu intervención editorial humana — lo que protege el canal ante YouTube.</div>
+          </div>
+          <div class="step">
+            <div class="step-head"><div class="step-n">4</div><div class="step-title">Guión Largo #1 en Grok (12 min)</div></div>
+            <div class="step-body">Pega este prompt con el tema elegido:</div>
+            <div class="prompt">
+              <span class="prompt-lbl">Prompt · Guión Video Largo Kabbalah · Grok</span>
+              <button class="cp" onclick="cp(this)">COPIAR</button>
+              <div class="prompt-text">Eres guionista especializado en Kabbalah clásica para YouTube en español. Tu audiencia es el público general curioso en espiritualidad — no iniciados, pero abiertos. Crea un guión de 6 minutos sobre: [TU TEMA].
+
+Estructura obligatoria:
+- GANCHO 0:00–0:20: pregunta o afirmación misteriosa que genere curiosidad inmediata sobre el tema Kabbalah. Empieza con "¿Qué pasa si lo que llamas realidad...?" o "Hay un mapa espiritual de 4.000 años que explica por qué..."
+- CONTEXTO 0:20–1:00: conecta el concepto Kabbalah con una situación emocional real del espectador hoy (relaciones, dinero, propósito, bloqueos).
+- ENSEÑANZA KABBALAH 1:00–4:00: explica el concepto (Sefirá, letra hebrea, concepto del Zohar, etc.) de forma accesible. Incluye: nombre hebreo con transliteración, qué enseña el Árbol de la Vida sobre esto, y 3 aplicaciones prácticas a la vida moderna.
+- CTA HOTMART 4:00–4:30: mención natural de un recurso/guía disponible en la descripción. No digas "ebook" — di "guía", "mapa", "recurso de profundización".
+- REFLEXIÓN FINAL 4:30–5:30: cierre con una verdad Kabbalah aplicada. Termina con una pregunta de engagement para los comentarios.
+- CTA SUSCRIPCIÓN 5:30–6:00
+
+Tono: misterioso pero accesible, revelador, como descubrir algo que siempre estuvo ahí.
+Máximo 850 palabras. Incluye [PAUSA] donde debe haber pausa dramática.
+
+Al final del guión dame también:
+- Título SEO (máx 70 car · fórmula: Misterio/Revelación + Concepto Kabbalah + Beneficio personal)
+- Descripción YouTube 300+ palabras con [LINK HOTMART] marcado
+- 15 tags en español (mezcla Kabbalah + espiritualidad general)
+- 8 hashtags: #kabbalah #cabalá #árboldelavida #sefirot #espiritualidad #misterio #zohar #letrasHebreas</div>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-head"><div class="step-n">5</div><div class="step-title">Revisa y ajusta el guión (8 min)</div></div>
+            <div class="step-body">Lee completo. Cambia mínimo 3 frases con tu perspectiva. Personaliza el CTA Hotmart. Si tienes una reflexión propia sobre el concepto Kabbalah, agrégala de 2 líneas. Eso marca la diferencia editorial.</div>
+          </div>
+          <div class="step">
+            <div class="step-head"><div class="step-n">6</div><div class="step-title">Audio en ElevenLabs (5 min)</div></div>
+            <div class="step-body">Pega el guión → voz masculina (semana impar) / femenina (semana par) → velocidad 0.80x (Kabbalah necesita ritmo más lento y misterioso) → genera y descarga el MP3. Escucha 30 seg verificando que los términos hebreos suenen bien.</div>
+          </div>
+        </div>
+        <div class="output">⭐ Output: 1 tema largo + 4 temas Shorts + guión revisado + MP3 descargado</div>
+      </div>
+    </div>
+
+    <div class="blk bk-morn">
+      <div class="blk-time"><div class="bt-m">7:45</div><div class="bt-d">20 min</div></div>
+      <div class="blk-body"><div class="blk-title">🧹 Quehaceres mañana</div><div class="blk-detail">Tender cama · recoger cocina · ordenar antes de salir.</div></div>
+    </div>
+    <div class="blk bk-work">
+      <div class="blk-time"><div class="bt-m">9:00</div><div class="bt-d">9 horas</div></div>
+      <div class="blk-body">
+        <div class="blk-title">💼 Trabajo</div>
+        <div class="blk-detail"><strong>Almuerzo (15 min):</strong> Publica Short independiente #1 (preparado el domingo/viernes anterior).</div>
+        <div class="pub-row">
+          <span class="pp pp-tt">TikTok · Short #1</span>
+          <span class="pp pp-yt">YouTube Shorts · #1</span>
+          <span class="pp pp-fb">Facebook Reel · #1</span>
+          <span class="pp pp-ig">Instagram Reel · #1</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="grp">
+    <div class="grp-lbl">🌆 Tarde · 6:20 – 10:15</div>
+
+    <div class="blk bk-home"><div class="blk-time"><div class="bt-m">6:20</div><div class="bt-d">10 min</div></div><div class="blk-body"><div class="blk-title">🏠 Llegada · transición</div><div class="blk-detail">Cambia de ropa, agua, saluda a tu pareja. No entres directo al proyecto.</div></div></div>
+    <div class="blk bk-home"><div class="blk-time"><div class="bt-m">6:30</div><div class="bt-d">30 min</div></div><div class="blk-body"><div class="blk-title">🍽 Cena con tu pareja</div><div class="blk-detail">Sin pantallas. Este tiempo es sagrado — no lo sacrifiques por el proyecto.</div></div></div>
+
+    <div class="blk proj">
+      <div class="blk-time"><div class="bt-m">7:00</div><div class="bt-d">2 horas</div></div>
+      <div class="blk-body">
+        <div class="blk-title">🎬 PROYECTO · Clips Veo 3 + Guión Short #2 + Audio</div>
+        <div class="steps">
+          <div class="step">
+            <div class="step-head"><div class="step-n">1</div><div class="step-title">Genera clips Veo 3 para el video largo (30 min)</div></div>
+            <div class="step-body">8–10 clips de 20–30 seg. Prompts visuales para Kabbalah:</div>
+            <div class="prompt">
+              <span class="prompt-lbl">Prompts Veo 3 · Estética Kabbalah</span>
+              <button class="cp" onclick="cp(this)">COPIAR</button>
+              <div class="prompt-text">APERTURA MÍSTICO: "Ancient golden Tree of Life diagram glowing with divine energy, esoteric symbols, mystical dark background, 4K cinematic, no text, sacred geometry"
+
+ENSEÑANZA / SEFIROT: "Ethereal glowing spheres connected by golden light paths, Kabbalistic Tree of Life visualization, dark mystical atmosphere, 4K, no people"
+
+LETRAS HEBREAS: "Ancient Hebrew letters glowing in golden light, mystical dark background, divine energy emanating, cinematic, sacred alphabet"
+
+EIN SOF / LUZ INFINITA: "Infinite golden divine light expanding in darkness, cosmic energy, ethereal particles, mystical atmosphere, no end, 4K slow motion"
+
+ZOHAR / LIBRO SAGRADO: "Ancient illuminated manuscript with glowing golden text, candle light, mystical library, dark wood, sacred knowledge, cinematic"
+
+ÁRBOL DE LA VIDA: "Sacred tree with golden glowing roots extending into cosmos, mystical light, divine energy flowing through branches, 4K, symbolic"
+
+TRANSFORMACIÓN: "Human silhouette surrounded by divine golden light and sacred geometry, spiritual awakening, mystical atmosphere, cinematic"
+
+CIERRE / KÉTER: "Crown of pure white divine light at top of infinite darkness, Keter energy, sacred geometry, cosmic crown, mystical gold"</div>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-head"><div class="step-n">2</div><div class="step-title">Genera clips Hailuo para Shorts verticales (15 min)</div></div>
+            <div class="step-body">3 clips de 15 seg en formato 9:16:</div>
+            <div class="prompt">
+              <span class="prompt-lbl">Prompts Hailuo · Shorts Kabbalah Verticales</span>
+              <button class="cp" onclick="cp(this)">COPIAR</button>
+              <div class="prompt-text">GANCHO: "Mystical Hebrew letter materializing from golden divine light, dark background, dramatic reveal, 9:16 vertical, 4K, esoteric"
+
+SEFIROT IMPACTO: "Glowing sphere of divine energy pulsing with Kabbalistic symbols, golden light, dark mystical, 9:16 vertical, cinematic slow motion"
+
+ÁRBOL VERTICAL: "Sacred Tree of Life rising from darkness to divine light, glowing spheres, 9:16 vertical, mystical golden atmosphere, loop-friendly"</div>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-head"><div class="step-n">3</div><div class="step-title">Guión Short independiente #2 en Grok (20 min)</div></div>
+            <div class="step-body">Tema #2 de tu lista (ej: una letra hebrea específica, una Sefirá, o el Ein Sof):</div>
+            <div class="prompt">
+              <span class="prompt-lbl">Prompt · Guión Short Kabbalah 60 seg · Grok</span>
+              <button class="cp" onclick="cp(this)">COPIAR</button>
+              <div class="prompt-text">Crea un guión de exactamente 60 segundos para TikTok/Reels sobre: [TEMA KABBALAH].
+
+Estructura:
+- GANCHO 0–3 seg: frase que detenga el scroll. Empieza con "La Kabbalah lleva 4.000 años guardando este secreto..." o "¿Sabías que la letra hebrea [X] activa algo en tu vida...?" o "El Árbol de la Vida tiene una respuesta para [situación cotidiana]..."
+- REVELACIÓN 3–50 seg: explica el concepto Kabbalah de forma misteriosa pero accesible. Incluye el nombre hebreo y su significado. Conecta con la vida del espectador hoy.
+- CTA 50–60 seg: "La guía completa está en mi bio / descripción 🔯"
+
+Tono: misterioso, revelador, íntimo — como si compartieras un secreto ancestral.
+Máximo 150 palabras.
+Al final dame: texto para pantalla (10 palabras máx con el concepto en hebreo) y 7 hashtags.</div>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-head"><div class="step-n">4</div><div class="step-title">Audio Short #2 en ElevenLabs (5 min)</div></div>
+            <div class="step-body">Pega el guión Short #2 → misma voz que el largo → velocidad 0.85x → descarga. Nombra: "short-2-[tema].mp3"</div>
+          </div>
+          <div class="step">
+            <div class="step-head"><div class="step-n">5</div><div class="step-title">Responde comentarios (10 min)</div></div>
+            <div class="step-body">TikTok, YouTube, Facebook, Instagram — responde todos los comentarios del Short #1 publicado hoy. En el nicho Kabbalah los comentarios son muy activos — la gente hace preguntas reales. Respóndelas con brevedad y misterio para mantener el engagement.</div>
+          </div>
+        </div>
+        <div class="output">⭐ Output: clips Veo 3 + Hailuo + guión Short #2 + MP3 Short #2</div>
+      </div>
+    </div>
+
+    <div class="blk bk-rest"><div class="blk-time"><div class="bt-m">9:00</div><div class="bt-d">45 min</div></div><div class="blk-body"><div class="blk-title">🛋 Tiempo de pareja</div><div class="blk-detail">Presencia real. Sin pantallas de trabajo.</div></div></div>
+    <div class="blk bk-night"><div class="blk-time"><div class="bt-m">9:45</div><div class="bt-d">30 min</div></div><div class="blk-body"><div class="blk-title">🌙 Cierre del día</div><div class="blk-detail">Lavar platos · preparar desayuno del martes · apagar pantallas.</div></div></div>
+    <div class="blk bk-rest"><div class="blk-time"><div class="bt-m">10:15</div><div class="bt-d">7.5h</div></div><div class="blk-body"><div class="blk-title">😴 Sueño</div><div class="blk-detail">Celular en modo avión.</div></div></div>
+  </div>
+  <div class="verse"><div class="verse-hb">בְּרֵאשִׁית</div><div class="verse-text">"En el principio, Ein Sof contrajo su luz infinita para crear espacio — y en ese espacio nació todo lo que existe."</div><div class="verse-ref">— Concepto del Tzimtzum · Lurianic Kabbalah</div></div>
+</div></div>
+
+<!-- ══════════════ MARTES ══════════════ -->
+<div class="page" id="page-mar"><div class="w">
+  <div class="ph">
+    <div class="ph-eye">Día 2 · Edición</div>
+    <div class="ph-title">Mar<em>tes</em></div>
+    <div class="ph-desc">Editas el video largo #1 en CapCut con la estética Kabbalah. Montas el Short #2. Publicas Short #2 en el almuerzo.</div>
+    <div class="tags"><span class="tag tg">✂️ Edición Largo #1</span><span class="tag tn">📤 Short #2 → 4 plataformas</span><span class="tag tv">⚡ Short #2 montado</span></div>
+  </div>
+  <div class="sumrow">
+    <div class="sum"><div class="sum-n" style="color:var(--gold2)">3h</div><div class="sum-l">Proyecto</div></div>
+    <div class="sum"><div class="sum-n" style="color:#6888F0">9h</div><div class="sum-l">Trabajo</div></div>
+    <div class="sum"><div class="sum-n" style="color:#48D8C8">1.5h</div><div class="sum-l">Hogar</div></div>
+    <div class="sum"><div class="sum-n" style="color:#9068F0">7.5h</div><div class="sum-l">Sueño</div></div>
+  </div>
+
+  <div class="grp">
+    <div class="grp-lbl">🌅 Mañana</div>
+    <div class="blk bk-wake"><div class="blk-time"><div class="bt-m">5:45</div><div class="bt-d">15 min</div></div><div class="blk-body"><div class="blk-title">⏰ Despertar</div><div class="blk-detail">Agua. Sin celular.</div></div></div>
+    <div class="blk bk-wake"><div class="blk-time"><div class="bt-m">6:00</div><div class="bt-d">25 min</div></div><div class="blk-body"><div class="blk-title">🚿 Baño + vestirse</div><div class="blk-detail">Rutina completa.</div></div></div>
+    <div class="blk bk-morn"><div class="blk-time"><div class="bt-m">6:25</div><div class="bt-d">20 min</div></div><div class="blk-body"><div class="blk-title">🍳 Desayuno con pareja</div><div class="blk-detail">Sin pantallas.</div></div></div>
+
+    <div class="blk proj">
+      <div class="blk-time"><div class="bt-m">6:45</div><div class="bt-d">1 hora</div></div>
+      <div class="blk-body">
+        <div class="blk-title">✂️ PROYECTO · Edición CapCut Video Largo #1 · Estética Kabbalah</div>
+        <div class="steps">
+          <div class="step"><div class="step-head"><div class="step-n">1</div><div class="step-title">Nuevo proyecto 16:9 · importa el MP3 de ElevenLabs</div></div><div class="step-body">El audio es la columna vertebral. El ritmo lento y misterioso del narrador define el tono del video.</div></div>
+          <div class="step"><div class="step-head"><div class="step-n">2</div><div class="step-title">Arrastra clips Veo 3 sobre el audio en orden narrativo</div></div><div class="step-body">Apertura mística → contexto → enseñanza Sefirá/letra → árbol de la vida → cierre. Los clips oscuros y dorados de Veo 3 crean la atmósfera correcta.</div></div>
+          <div class="step"><div class="step-head"><div class="step-n">3</div><div class="step-title">Subtítulos automáticos en español + estilo visual Kabbalah</div></div><div class="step-body">Activa subtítulos → fuente: serif o Bold blanca → fondo sutil oscuro detrás del texto → cuando aparezca un término hebreo, agrega el texto hebreo (ej: כֶּתֶר) en dorado sobre el clip correspondiente.</div></div>
+          <div class="step"><div class="step-head"><div class="step-n">4</div><div class="step-title">Nombre de la Sefirá / concepto en pantalla</div></div><div class="step-body">Escribe el nombre hebreo + español visible durante al menos 5 segundos sobre el clip del árbol de la vida. Eso es lo que los espectadores capturan y comparten.</div></div>
+          <div class="step"><div class="step-head"><div class="step-n">5</div><div class="step-title">Música ambiente Kabbalah / mística al 12% de volumen</div></div><div class="step-body">Busca en YouTube Audio Library: "mystical", "ancient", "sacred". Sin letra, sin ritmo moderno. Que evoque el misterio del Árbol de la Vida.</div></div>
+        </div>
+        <div class="output">⭐ Meta: video largo al 80% ensamblado antes de salir</div>
+      </div>
+    </div>
+
+    <div class="blk bk-morn"><div class="blk-time"><div class="bt-m">7:45</div><div class="bt-d">20 min</div></div><div class="blk-body"><div class="blk-title">🧹 Quehaceres</div><div class="blk-detail">Tender cama · recoger · ordenar.</div></div></div>
+    <div class="blk bk-work">
+      <div class="blk-time"><div class="bt-m">9:00</div><div class="bt-d">9 horas</div></div>
+      <div class="blk-body"><div class="blk-title">💼 Trabajo</div>
+        <div class="blk-detail"><strong>Almuerzo:</strong> Publica Short #2 en las 4 plataformas. Descripción: gancho del guión + nombre hebreo del concepto + "Guía completa en mi bio 🔯" + 7 hashtags.</div>
+        <div class="pub-row">
+          <span class="pp pp-tt">TikTok · Short #2</span><span class="pp pp-yt">YouTube Shorts · #2</span>
+          <span class="pp pp-fb">Facebook Reel · #2</span><span class="pp pp-ig">Instagram Reel · #2</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="grp">
+    <div class="grp-lbl">🌆 Tarde</div>
+    <div class="blk bk-home"><div class="blk-time"><div class="bt-m">6:20</div><div class="bt-d">10 min</div></div><div class="blk-body"><div class="blk-title">🏠 Llegada</div><div class="blk-detail">Transición. Cambia ropa, agua, saluda.</div></div></div>
+    <div class="blk bk-home"><div class="blk-time"><div class="bt-m">6:30</div><div class="bt-d">30 min</div></div><div class="blk-body"><div class="blk-title">🍽 Cena con pareja</div><div class="blk-detail">Sin pantallas.</div></div></div>
+
+    <div class="blk proj">
+      <div class="blk-time"><div class="bt-m">7:00</div><div class="bt-d">2 horas</div></div>
+      <div class="blk-body">
+        <div class="blk-title">✂️ PROYECTO · Finalizar Largo #1 + Miniatura Kabbalah + Montar Short #2</div>
+        <div class="steps">
+          <div class="step"><div class="step-head"><div class="step-n">1</div><div class="step-title">7:00–7:30 · Termina edición → exporta 1080p</div></div><div class="step-body">Transiciones fade oscuras entre clips (0.5 seg). Revisa que los subtítulos estén bien y que el término hebreo sea visible.</div></div>
+          <div class="step"><div class="step-head"><div class="step-n">2</div><div class="step-title">7:30–8:00 · Miniatura Kabbalah en Canva</div></div>
+            <div class="step-body">Estética: fondo negro o azul oscuro → símbolo del Árbol de la Vida dorado o clip de Veo 3 → máx 5 palabras blancas bold → si el tema tiene un término hebreo, agrégalo en dorado → exporta PNG 1280×720. La miniatura Kabbalah debe verse misteriosa y sagrada.</div>
+          </div>
+          <div class="step"><div class="step-head"><div class="step-n">3</div><div class="step-title">8:00–8:40 · Monta Short #2 en CapCut vertical</div></div><div class="step-body">Nuevo proyecto 9:16 · MP3 Short #2 · clip Hailuo de fondo · texto con el nombre hebreo en dorado + traducción en blanco · CTA "Guía completa → link en bio 🔯" en los últimos 5 seg · exporta 1080×1920 SIN marca de agua.</div></div>
+          <div class="step"><div class="step-head"><div class="step-n">4</div><div class="step-title">8:40–9:00 · Responde comentarios</div></div><div class="step-body">TikTok, YouTube, Facebook, Instagram — todos los comentarios del Short #1 y #2. En Kabbalah, los comentarios del tipo "¿qué significa X?" son oportunidades de engagement excelentes.</div></div>
+        </div>
+        <div class="output">⭐ Output: largo #1 exportado + miniatura PNG + Short #2 montado</div>
+      </div>
+    </div>
+
+    <div class="blk bk-rest"><div class="blk-time"><div class="bt-m">9:00</div><div class="bt-d">45 min</div></div><div class="blk-body"><div class="blk-title">🛋 Tiempo de pareja</div><div class="blk-detail">Desconéctate completamente.</div></div></div>
+    <div class="blk bk-night"><div class="blk-time"><div class="bt-m">9:45</div><div class="bt-d">30 min</div></div><div class="blk-body"><div class="blk-title">🌙 Cierre</div><div class="blk-detail">Lavar platos · recoger · preparar mañana.</div></div></div>
+    <div class="blk bk-rest"><div class="blk-time"><div class="bt-m">10:15</div><div class="bt-d">7.5h</div></div><div class="blk-body"><div class="blk-title">😴 Sueño</div><div class="blk-detail">Modo avión.</div></div></div>
+  </div>
+  <div class="verse"><div class="verse-hb">חָכְמָה</div><div class="verse-text">"Jojmá — la Sabiduría — es el primer destello de luz que emerge del Ein Sof. Es la idea antes de que exista el pensamiento."</div><div class="verse-ref">— Sefer ha-Zohar</div></div>
+</div></div>
+
+<!-- MIÉRCOLES, JUEVES, VIERNES — misma estructura que el sistema anterior adaptada -->
+<div class="page" id="page-mie"><div class="w">
+  <div class="ph">
+    <div class="ph-eye">Día 3 · Publicación</div>
+    <div class="ph-title">Miér<em>coles</em></div>
+    <div class="ph-desc">Publicas el video largo #1 en YouTube y Facebook. Generas guión + audio del largo #2. Montas Short #3. Segundo pico semanal de búsquedas esotéricas.</div>
+    <div class="tags"><span class="tag tg">📤 Largo #1 → YouTube + Facebook</span><span class="tag tn">📤 Short #3 → 4 plataformas</span><span class="tag tv">✍️ Guión largo #2</span></div>
+  </div>
+  <div class="sumrow">
+    <div class="sum"><div class="sum-n" style="color:var(--gold2)">3h</div><div class="sum-l">Proyecto</div></div>
+    <div class="sum"><div class="sum-n" style="color:#6888F0">9h</div><div class="sum-l">Trabajo</div></div>
+    <div class="sum"><div class="sum-n" style="color:#48D8C8">1.5h</div><div class="sum-l">Hogar</div></div>
+    <div class="sum"><div class="sum-n" style="color:#9068F0">7.5h</div><div class="sum-l">Sueño</div></div>
+  </div>
+
+  <div class="grp">
+    <div class="grp-lbl">🌅 Mañana</div>
+    <div class="blk bk-wake"><div class="blk-time"><div class="bt-m">5:45</div><div class="bt-d">15 min</div></div><div class="blk-body"><div class="blk-title">⏰ Despertar</div><div class="blk-detail">Agua. Sin celular.</div></div></div>
+    <div class="blk bk-wake"><div class="blk-time"><div class="bt-m">6:00</div><div class="bt-d">25 min</div></div><div class="blk-body"><div class="blk-title">🚿 Baño + vestirse</div><div class="blk-detail">Rutina.</div></div></div>
+    <div class="blk bk-morn"><div class="blk-time"><div class="bt-m">6:25</div><div class="bt-d">20 min</div></div><div class="blk-body"><div class="blk-title">🍳 Desayuno</div><div class="blk-detail">Sin pantallas.</div></div></div>
+
+    <div class="blk proj">
+      <div class="blk-time"><div class="bt-m">6:45</div><div class="bt-d">1 hora</div></div>
+      <div class="blk-body">
+        <div class="blk-title">📤 PROYECTO · Publicar Largo #1 en YouTube + Facebook</div>
+        <div class="steps">
+          <div class="step"><div class="step-head"><div class="step-n">1</div><div class="step-title">YouTube Studio (25 min)</div></div>
+            <div class="step-body">Sube el video → título SEO Kabbalah → descripción 300+ palabras con link Hotmart en las primeras 3 líneas → 15 tags → miniatura Kabbalah → lista de reproducción (ej: "Árbol de la Vida", "Sefirot", "Letras Hebreas") → <strong>MARCA "Contenido alterado o sintético"</strong> → PUBLICAR público.</div>
+          </div>
+          <div class="step"><div class="step-head"><div class="step-n">2</div><div class="step-title">Comentario fijado en YouTube (5 min)</div></div>
+            <div class="step-body">Fija un comentario con: el nombre hebreo del concepto tratado + link de Hotmart + pregunta de engagement: "¿Con cuál Sefirá te identificas más? 🔯 Cuéntame abajo."</div>
+          </div>
+          <div class="step"><div class="step-head"><div class="step-n">3</div><div class="step-title">Facebook Página + Grupo (10 min)</div></div>
+            <div class="step-body">Sube el video directamente a Facebook (no el link de YouTube) → descripción + link Hotmart. Luego en el Grupo publica: "Nuevo video sobre [concepto Kabbalah] 🔯 — link directo al video aquí."</div>
+          </div>
+          <div class="step"><div class="step-head"><div class="step-n">4</div><div class="step-title">Mira el video 2 min desde tu cuenta</div></div>
+            <div class="step-body">Watch time inicial para el algoritmo. Los primeros 30 min son cruciales.</div>
+          </div>
+        </div>
+        <div class="pub-row"><span class="pp pp-yt">YouTube · Largo #1</span><span class="pp pp-fb">Facebook · Largo #1</span></div>
+      </div>
+    </div>
+
+    <div class="blk bk-morn"><div class="blk-time"><div class="bt-m">7:45</div><div class="bt-d">20 min</div></div><div class="blk-body"><div class="blk-title">🧹 Quehaceres</div><div class="blk-detail">Tender cama · recoger · barrer si toca.</div></div></div>
+    <div class="blk bk-work">
+      <div class="blk-time"><div class="bt-m">9:00</div><div class="bt-d">9 horas</div></div>
+      <div class="blk-body"><div class="blk-title">💼 Trabajo</div>
+        <div class="blk-detail"><strong>Almuerzo:</strong> Publica Short #3 + responde comentarios del video largo.</div>
+        <div class="pub-row"><span class="pp pp-tt">TikTok · Short #3</span><span class="pp pp-yt">YouTube Shorts · #3</span><span class="pp pp-fb">Facebook Reel · #3</span><span class="pp pp-ig">Instagram Reel · #3</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="grp">
+    <div class="grp-lbl">🌆 Tarde</div>
+    <div class="blk bk-home"><div class="blk-time"><div class="bt-m">6:20</div><div class="bt-d">10 min</div></div><div class="blk-body"><div class="blk-title">🏠 Llegada</div><div class="blk-detail">Transición. Cambia ropa, agua, saluda.</div></div></div>
+    <div class="blk bk-home"><div class="blk-time"><div class="bt-m">6:30</div><div class="bt-d">30 min</div></div><div class="blk-body"><div class="blk-title">🍽 Cena</div><div class="blk-detail">Sin pantallas.</div></div></div>
+
+    <div class="blk proj">
+      <div class="blk-time"><div class="bt-m">7:00</div><div class="bt-d">2 horas</div></div>
+      <div class="blk-body">
+        <div class="blk-title">✍️ PROYECTO · Engagement + Guión Largo #2 + Audio + Short #3 montado + Clips Veo 3</div>
+        <div class="steps">
+          <div class="step"><div class="step-head"><div class="step-n">1</div><div class="step-title">7:00–7:15 · Responde comentarios (15 min)</div></div><div class="step-body">Todos los comentarios de los Shorts #1, #2, #3 y del video largo. En Kabbalah los comentarios con preguntas son la mejor señal de engagement — respóndelas con una frase que invite a profundizar.</div></div>
+          <div class="step"><div class="step-head"><div class="step-n">2</div><div class="step-title">7:15–7:45 · Guión Largo #2 en Grok</div></div><div class="step-body">Usa el mismo prompt del lunes con el tema largo #2. Revisa, ajusta 3 frases, personaliza el CTA Hotmart.</div></div>
+          <div class="step"><div class="step-head"><div class="step-n">3</div><div class="step-title">7:45–8:00 · ElevenLabs Largo #2</div></div><div class="step-body">Voz alternada → velocidad 0.80x → descarga MP3.</div></div>
+          <div class="step"><div class="step-head"><div class="step-n">4</div><div class="step-title">8:00–8:30 · Monta Short #3 en CapCut vertical</div></div><div class="step-body">MP3 Short #3 + clip Hailuo + nombre hebreo en dorado + CTA final → exporta 9:16 sin marca de agua.</div></div>
+          <div class="step"><div class="step-head"><div class="step-n">5</div><div class="step-title">8:30–9:00 · Lanza clips Veo 3 para Largo #2</div></div><div class="step-body">Genera los 8–10 clips Kabbalah para el video largo #2. Adapta los prompts al nuevo tema (ej: si es sobre Biná, enfoca los prompts en la luna, la madre divina, la inteligencia cósmica).</div></div>
+        </div>
+        <div class="output">⭐ Output: guión #2 + MP3 #2 + Short #3 montado + clips Veo 3 generándose</div>
+      </div>
+    </div>
+
+    <div class="blk bk-rest"><div class="blk-time"><div class="bt-m">9:00</div><div class="bt-d">45 min</div></div><div class="blk-body"><div class="blk-title">🛋 Tiempo de pareja</div><div class="blk-detail">Desconéctate.</div></div></div>
+    <div class="blk bk-night"><div class="blk-time"><div class="bt-m">9:45</div><div class="bt-d">30 min</div></div><div class="blk-body"><div class="blk-title">🌙 Cierre</div><div class="blk-detail">Lavar platos · recoger · preparar mañana.</div></div></div>
+    <div class="blk bk-rest"><div class="blk-time"><div class="bt-m">10:15</div><div class="bt-d">7.5h</div></div><div class="blk-body"><div class="blk-title">😴 Sueño</div><div class="blk-detail">Modo avión.</div></div></div>
+  </div>
+  <div class="verse"><div class="verse-hb">בִּינָה</div><div class="verse-text">"Biná — el Entendimiento — es la madre divina. Transforma el destello de Jojmá en una forma que puede ser comprendida."</div><div class="verse-ref">— Tanya · Shneur Zalman de Liadi</div></div>
+</div></div>
+
+<!-- JUEVES -->
+<div class="page" id="page-jue"><div class="w">
+  <div class="ph">
+    <div class="ph-eye">Día 4 · Edición + Publicaciones</div>
+    <div class="ph-title">Jue<em>ves</em></div>
+    <div class="ph-desc">Editas el video largo #2, publicas Short #4, montas Short #4 y creas el guión del Short #5. Publicas reflexión en el Grupo de Facebook.</div>
+    <div class="tags"><span class="tag tg">✂️ Edición largo #2</span><span class="tag tn">📤 Short #4 → 4 plataformas</span><span class="tag tv">👥 Grupo Facebook Kabbalah</span></div>
+  </div>
+  <div class="sumrow">
+    <div class="sum"><div class="sum-n" style="color:var(--gold2)">3h</div><div class="sum-l">Proyecto</div></div>
+    <div class="sum"><div class="sum-n" style="color:#6888F0">9h</div><div class="sum-l">Trabajo</div></div>
+    <div class="sum"><div class="sum-n" style="color:#48D8C8">1.5h</div><div class="sum-l">Hogar</div></div>
+    <div class="sum"><div class="sum-n" style="color:#9068F0">7.5h</div><div class="sum-l">Sueño</div></div>
+  </div>
+
+  <div class="grp">
+    <div class="grp-lbl">🌅 Mañana</div>
+    <div class="blk bk-wake"><div class="blk-time"><div class="bt-m">5:45</div></div><div class="blk-body"><div class="blk-title">⏰ Despertar · baño · desayuno</div><div class="blk-detail">Misma rutina.</div></div></div>
+
+    <div class="blk proj">
+      <div class="blk-time"><div class="bt-m">6:45</div><div class="bt-d">1 hora</div></div>
+      <div class="blk-body">
+        <div class="blk-title">✂️ PROYECTO · Edición Largo #2 + Guión Short #4 + Audio</div>
+        <div class="steps">
+          <div class="step"><div class="step-head"><div class="step-n">1</div><div class="step-title">Edición Largo #2 en CapCut (45 min)</div></div><div class="step-body">Mismo flujo del martes. Varía al menos 2 elementos visuales: color del texto hebreo, posición del término en pantalla, diferente clip de apertura Veo 3. Exporta 1080p.</div></div>
+          <div class="step"><div class="step-head"><div class="step-n">2</div><div class="step-title">Guión Short #4 en Grok + Audio (15 min)</div></div>
+            <div class="step-body">Tema #4 de tu lista del lunes. Usa el prompt de Short Kabbalah. Audio en ElevenLabs descargado.</div>
+          </div>
+        </div>
+        <div class="output">⭐ Largo #2 exportado + guión + MP3 Short #4</div>
+      </div>
+    </div>
+
+    <div class="blk bk-morn"><div class="blk-time"><div class="bt-m">7:45</div><div class="bt-d">20 min</div></div><div class="blk-body"><div class="blk-title">🧹 Quehaceres</div><div class="blk-detail">Tender cama · recoger · trapear (jueves limpieza).</div></div></div>
+    <div class="blk bk-work">
+      <div class="blk-time"><div class="bt-m">9:00</div><div class="bt-d">9 horas</div></div>
+      <div class="blk-body"><div class="blk-title">💼 Trabajo</div>
+        <div class="blk-detail"><strong>Almuerzo:</strong> Publica Short #4 en las 4 plataformas.</div>
+        <div class="pub-row"><span class="pp pp-tt">TikTok · Short #4</span><span class="pp pp-yt">YouTube Shorts · #4</span><span class="pp pp-fb">Facebook Reel · #4</span><span class="pp pp-ig">Instagram Reel · #4</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="grp">
+    <div class="grp-lbl">🌆 Tarde</div>
+    <div class="blk bk-home"><div class="blk-time"><div class="bt-m">6:20</div></div><div class="blk-body"><div class="blk-title">🏠 Llegada · cena</div><div class="blk-detail">Transición + cena con pareja sin pantallas.</div></div></div>
+    <div class="blk bk-home"><div class="blk-time"><div class="bt-m">6:30</div><div class="bt-d">30 min</div></div><div class="blk-body"><div class="blk-title">🍽 Cena con pareja</div><div class="blk-detail">Sin pantallas.</div></div></div>
+
+    <div class="blk proj">
+      <div class="blk-time"><div class="bt-m">7:00</div><div class="bt-d">2 horas</div></div>
+      <div class="blk-body">
+        <div class="blk-title">⚡ PROYECTO · Miniatura #2 + Short #4 montado + Grupo FB + Short #5</div>
+        <div class="steps">
+          <div class="step"><div class="step-head"><div class="step-n">1</div><div class="step-title">7:00–7:20 · Miniatura Largo #2 en Canva</div></div><div class="step-body">Estética Kabbalah: fondo oscuro + símbolo/clip Veo 3 + término hebreo en dorado + máx 5 palabras blancas → PNG 1280×720.</div></div>
+          <div class="step"><div class="step-head"><div class="step-n">2</div><div class="step-title">7:20–8:00 · Monta Short #4 en CapCut vertical</div></div><div class="step-body">MP3 Short #4 + clip Hailuo + nombre hebreo dorado + traducción blanca + CTA → 9:16 → sin marca de agua.</div></div>
+          <div class="step"><div class="step-head"><div class="step-n">3</div><div class="step-title">8:00–8:20 · Post semanal en Grupo Facebook Kabbalah</div></div>
+            <div class="step-body">Publica una reflexión escrita de 3–4 líneas sobre el concepto de la semana: nombre hebreo + qué enseña el Árbol de la Vida + aplicación a la vida hoy. En los comentarios fija el link de Hotmart: "Para quien quiera ir más profundo, aquí está el mapa completo 🔯". El grupo convierte 3–5x mejor porque ya hay confianza.</div>
+          </div>
+          <div class="step"><div class="step-head"><div class="step-n">4</div><div class="step-title">8:20–8:50 · Guión Short #5 + Audio</div></div><div class="step-body">Tema #5 de tu lista. Prompt de Short Kabbalah en Grok → audio en ElevenLabs → descarga.</div></div>
+          <div class="step"><div class="step-head"><div class="step-n">5</div><div class="step-title">8:50–9:00 · Responde todos los comentarios</div></div><div class="step-body">TikTok, YouTube, Facebook, Instagram — Shorts #1 al #4 y el video largo.</div></div>
+        </div>
+        <div class="output">⭐ Miniatura #2 + Short #4 montado + post grupo FB + guión+MP3 Short #5</div>
+      </div>
+    </div>
+
+    <div class="blk bk-rest"><div class="blk-time"><div class="bt-m">9:00</div><div class="bt-d">45 min</div></div><div class="blk-body"><div class="blk-title">🛋 Tiempo de pareja</div><div class="blk-detail">Desconéctate.</div></div></div>
+    <div class="blk bk-night"><div class="blk-time"><div class="bt-m">9:45</div><div class="bt-d">30 min</div></div><div class="blk-body"><div class="blk-title">🌙 Cierre</div><div class="blk-detail">Lavar platos · recoger · preparar mañana.</div></div></div>
+    <div class="blk bk-rest"><div class="blk-time"><div class="bt-m">10:15</div><div class="bt-d">7.5h</div></div><div class="blk-body"><div class="blk-title">😴 Sueño</div></div></div>
+  </div>
+  <div class="verse"><div class="verse-hb">תִּפְאֶרֶת</div><div class="verse-text">"Tiferet — la Belleza — es el corazón del Árbol. El punto donde la misericordia y el juicio se equilibran en armonía perfecta."</div><div class="verse-ref">— Árbol de la Vida · Ari · Lurianic Kabbalah</div></div>
+</div></div>
+
+<!-- VIERNES -->
+<div class="page" id="page-vie"><div class="w">
+  <div class="ph">
+    <div class="ph-eye">Día 5 · Publicación + Métricas</div>
+    <div class="ph-title">Vier<em>nes</em></div>
+    <div class="ph-desc">Publicas el largo #2, Short #5. Revisas métricas semanales y preparas el Short #6 para el sábado.</div>
+    <div class="tags"><span class="tag tg">📤 Largo #2 → YouTube+Facebook</span><span class="tag tn">📤 Short #5 → 4 plataformas</span><span class="tag tr">📊 Métricas</span></div>
+  </div>
+  <div class="sumrow">
+    <div class="sum"><div class="sum-n" style="color:var(--gold2)">3h</div><div class="sum-l">Proyecto</div></div>
+    <div class="sum"><div class="sum-n" style="color:#6888F0">9h</div><div class="sum-l">Trabajo</div></div>
+    <div class="sum"><div class="sum-n" style="color:#48D8C8">2h</div><div class="sum-l">Hogar</div></div>
+    <div class="sum"><div class="sum-n" style="color:#9068F0">8h</div><div class="sum-l">Sueño</div></div>
+  </div>
+
+  <div class="grp">
+    <div class="grp-lbl">🌅 Mañana</div>
+    <div class="blk bk-wake"><div class="blk-time"><div class="bt-m">5:45</div></div><div class="blk-body"><div class="blk-title">⏰ Despertar · baño · desayuno</div><div class="blk-detail">Misma rutina.</div></div></div>
+
+    <div class="blk proj">
+      <div class="blk-time"><div class="bt-m">6:45</div><div class="bt-d">1 hora</div></div>
+      <div class="blk-body">
+        <div class="blk-title">📤 PROYECTO · Publicar Largo #2 + Montar Short #5</div>
+        <div class="steps">
+          <div class="step"><div class="step-head"><div class="step-n">1</div><div class="step-title">Publicar Largo #2 en YouTube (20 min)</div></div><div class="step-body">Título SEO → descripción → link Hotmart primeras 3 líneas → tags → miniatura Kabbalah → lista de reproducción → MARCA "Contenido alterado" → PUBLICAR. Fija comentario con término hebreo + link + pregunta de engagement.</div></div>
+          <div class="step"><div class="step-head"><div class="step-n">2</div><div class="step-title">Publicar Largo #2 en Facebook (8 min)</div></div><div class="step-body">Sube directo (no link YouTube) → descripción + link Hotmart → notifica el grupo.</div></div>
+          <div class="step"><div class="step-head"><div class="step-n">3</div><div class="step-title">Monta Short #5 en CapCut (20 min)</div></div><div class="step-body">MP3 Short #5 + clip Hailuo + nombre hebreo dorado + CTA → 9:16 → exporta. Listo para publicar en el almuerzo.</div></div>
+        </div>
+        <div class="pub-row"><span class="pp pp-yt">YouTube · Largo #2</span><span class="pp pp-fb">Facebook · Largo #2</span></div>
+      </div>
+    </div>
+
+    <div class="blk bk-morn"><div class="blk-time"><div class="bt-m">7:45</div><div class="bt-d">20 min</div></div><div class="blk-body"><div class="blk-title">🧹 Quehaceres</div><div class="blk-detail">Tender cama · recoger · limpiar baño (viernes).</div></div></div>
+    <div class="blk bk-work">
+      <div class="blk-time"><div class="bt-m">9:00</div><div class="bt-d">9 horas</div></div>
+      <div class="blk-body"><div class="blk-title">💼 Trabajo</div>
+        <div class="blk-detail"><strong>Almuerzo:</strong> Publica Short #5. Revisa métricas en YouTube Studio (10 min).</div>
+        <div class="pub-row"><span class="pp pp-tt">TikTok · Short #5</span><span class="pp pp-yt">YouTube Shorts · #5</span><span class="pp pp-fb">Facebook Reel · #5</span><span class="pp pp-ig">Instagram Reel · #5</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="grp">
+    <div class="grp-lbl">🌆 Tarde · Cierre semanal</div>
+    <div class="blk bk-home"><div class="blk-time"><div class="bt-m">6:20</div></div><div class="blk-body"><div class="blk-title">🏠 Llegada</div><div class="blk-detail">Transición.</div></div></div>
+    <div class="blk bk-home"><div class="blk-time"><div class="bt-m">6:30</div><div class="bt-d">30 min</div></div><div class="blk-body"><div class="blk-title">🍽 Cena especial de viernes</div><div class="blk-detail">Celebren la semana. Sin pantallas.</div></div></div>
+
+    <div class="blk proj">
+      <div class="blk-time"><div class="bt-m">7:00</div><div class="bt-d">2 horas</div></div>
+      <div class="blk-body">
+        <div class="blk-title">📊 PROYECTO · Métricas + Short #6 + Planificación</div>
+        <div class="steps">
+          <div class="step"><div class="step-head"><div class="step-n">1</div><div class="step-title">7:00–7:30 · Métricas en YouTube Studio</div></div>
+            <div class="step-body">Revisa CTR (meta +4%) · Watch Time % (meta +50%) · subs por video. Identifica qué concepto Kabbalah tuvo más engagement esta semana → ese tema se repite con otro ángulo la semana siguiente. En Kabbalah los temas con mayor engagement suelen ser: Sefirot aplicadas a la vida, letras hebreas y su poder, y el Ein Sof / Zohar.</div>
+          </div>
+          <div class="step"><div class="step-head"><div class="step-n">2</div><div class="step-title">7:30–7:50 · Mejora la miniatura del video con menor CTR</div></div><div class="step-body">Canva → rediseña → sube a YouTube Studio. La acción de mayor impacto por menor esfuerzo.</div></div>
+          <div class="step"><div class="step-head"><div class="step-n">3</div><div class="step-title">7:50–8:30 · Guión Short #6 + Audio ElevenLabs</div></div><div class="step-body">Tema viral de la semana identificado en métricas. Prompt Short Kabbalah → audio descargado.</div></div>
+          <div class="step"><div class="step-head"><div class="step-n">4</div><div class="step-title">8:30–8:50 · Monta Short #6 en CapCut</div></div><div class="step-body">MP3 + Hailuo + nombre hebreo + CTA → exporta 9:16 sin marca de agua. Listo para sábado.</div></div>
+          <div class="step"><div class="step-head"><div class="step-n">5</div><div class="step-title">8:50–9:00 · Planifica la próxima semana</div></div><div class="step-body">Anota en papel: concepto Kabbalah para el largo #1 + 4 Shorts de la próxima semana (sugerencia: avanza por las 10 Sefirot en orden — ver pestaña Sefirot).</div></div>
+        </div>
+        <div class="output">⭐ Métricas analizadas + miniatura mejorada + Short #6 montado + plan semana</div>
+      </div>
+    </div>
+
+    <div class="blk bk-rest"><div class="blk-time"><div class="bt-m">9:00</div><div class="bt-d">1.5h</div></div><div class="blk-body"><div class="blk-title">🛋 Noche de viernes · Pareja</div><div class="blk-detail">Sin proyecto sin excepción.</div></div></div>
+    <div class="blk bk-rest"><div class="blk-time"><div class="bt-m">10:30</div><div class="bt-d">8h</div></div><div class="blk-body"><div class="blk-title">😴 Sueño largo</div></div></div>
+  </div>
+  <div class="verse"><div class="verse-hb">כֶּתֶר</div><div class="verse-text">"Kéter — la Corona — es la voluntad divina pura. El punto antes de toda creación, donde la potencia existe sin forma."</div><div class="verse-ref">— Sefer Yetzirá</div></div>
+</div></div>
+
+<!-- SÁBADO -->
+<div class="page" id="page-sab"><div class="w">
+  <div class="ph">
+    <div class="ph-eye">Día 6 · Trabajo + Proyecto liviano</div>
+    <div class="ph-title">Sá<em>bado</em></div>
+    <div class="ph-desc">Trabajas 10am–5pm. Antes publicas Short #6 y programas el video del domingo. Después: mercado, cocina por tandas y descanso de pareja.</div>
+    <div class="tags"><span class="tag tn">📤 Short #6 → 4 plataformas</span><span class="tag tb">💼 Trabajo 10–5pm</span><span class="tag tv">📅 Programar video domingo</span></div>
+  </div>
+  <div class="sumrow">
+    <div class="sum"><div class="sum-n" style="color:var(--gold2)">1h</div><div class="sum-l">Proyecto</div></div>
+    <div class="sum"><div class="sum-n" style="color:#6888F0">7h</div><div class="sum-l">Trabajo</div></div>
+    <div class="sum"><div class="sum-n" style="color:#48D8C8">3h</div><div class="sum-l">Hogar</div></div>
+    <div class="sum"><div class="sum-n" style="color:#9068F0">8.5h</div><div class="sum-l">Descanso</div></div>
+  </div>
+
+  <div class="grp">
+    <div class="grp-lbl">🌅 Mañana antes del trabajo</div>
+    <div class="blk bk-wake"><div class="blk-time"><div class="bt-m">7:30</div><div class="bt-d">50 min</div></div><div class="blk-body"><div class="blk-title">☀️ Despertar suave + desayuno especial</div><div class="blk-detail">Sin alarma agresiva. Desayuno con pareja. Sábado tiene otro ritmo.</div></div></div>
+
+    <div class="blk proj">
+      <div class="blk-time"><div class="bt-m">8:20</div><div class="bt-d">50 min</div></div>
+      <div class="blk-body">
+        <div class="blk-title">📤 PROYECTO · Short #6 + Programar video del domingo</div>
+        <div class="steps">
+          <div class="step"><div class="step-head"><div class="step-n">1</div><div class="step-title">Publica Short #6 en las 4 plataformas (20 min)</div></div>
+            <div class="step-body">El fin de semana tiene buen alcance en contenido esotérico — la gente busca espiritualidad en su tiempo libre.</div>
+            <div class="pub-row" style="margin-top:6px;"><span class="pp pp-tt">TikTok · Short #6</span><span class="pp pp-yt">YouTube Shorts · #6</span><span class="pp pp-fb">Facebook Reel · #6</span><span class="pp pp-ig">Instagram Reel · #6</span></div>
+          </div>
+          <div class="step"><div class="step-head"><div class="step-n">2</div><div class="step-title">Programa el video del domingo en YouTube Studio (15 min)</div></div><div class="step-body">Si tienes preparado un video extra (preparado durante la semana), prográmalo para las 9:00am del domingo → se publica solo mientras descansas. El domingo es el mejor día del año para contenido espiritual/esotérico.</div></div>
+          <div class="step"><div class="step-head"><div class="step-n">3</div><div class="step-title">Responde comentarios pendientes (15 min)</div></div><div class="step-body">Última revisión antes de cerrar el proyecto el fin de semana.</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="blk bk-home"><div class="blk-time"><div class="bt-m">9:10</div><div class="bt-d">50 min</div></div><div class="blk-body">
+      <div class="blk-title">🧹 Limpieza general (con tu pareja)</div>
+      <div class="blk-detail">En pareja: barrer + trapear + baños + cocina. 40–50 min juntos.</div>
+    </div></div>
+    <div class="blk bk-work"><div class="blk-time"><div class="bt-m">10:00</div><div class="bt-d">7 horas</div></div><div class="blk-body"><div class="blk-title">💼 Trabajo (10am–5pm)</div><div class="blk-detail">Enfoque. Almuerzo: revisa ventas en Hotmart (2 min). Nada más.</div></div></div>
+  </div>
+
+  <div class="grp">
+    <div class="grp-lbl">🌆 Tarde después del trabajo</div>
+    <div class="blk bk-home"><div class="blk-time"><div class="bt-m">5:10</div><div class="bt-d">20 min</div></div><div class="blk-body"><div class="blk-title">🛒 Mercado si hace falta</div><div class="blk-detail">Compra para cocinar por tandas hoy.</div></div></div>
+    <div class="blk bk-home"><div class="blk-time"><div class="bt-m">5:30</div><div class="bt-d">1h</div></div><div class="blk-body">
+      <div class="blk-title">🍲 Cocina por tandas (con tu pareja)</div>
+      <div class="blk-detail">Comidas de lunes a miércoles de una vez. En tuppers. Te libera 25–30 min cada noche de semana.</div>
+    </div></div>
+    <div class="blk bk-rest"><div class="blk-time"><div class="bt-m">6:30</div><div class="bt-d">2.5h</div></div><div class="blk-body"><div class="blk-title">🛋 Tarde de pareja · Descanso total</div><div class="blk-detail">100% para ustedes. Sin proyecto.</div></div></div>
+    <div class="blk bk-night"><div class="blk-time"><div class="bt-m">9:00</div><div class="bt-d">30 min</div></div><div class="blk-body"><div class="blk-title">🌙 Cena + cierre</div></div></div>
+    <div class="blk bk-rest"><div class="blk-time"><div class="bt-m">9:30</div><div class="bt-d">8.5h</div></div><div class="blk-body"><div class="blk-title">😴 Sueño largo de sábado</div></div></div>
+  </div>
+  <div class="verse"><div class="verse-hb">שַׁבָּת</div><div class="verse-text">"El Shabbat es la Sefirá de Maljut descansando — el reino del mundo físico encontrando su paz en la luz de Kéter."</div><div class="verse-ref">— Tradición cabalística</div></div>
+</div></div>
+
+<!-- DOMINGO — DESCANSO TOTAL -->
+<div class="page" id="page-dom"><div class="w">
+  <div class="ph">
+    <div class="ph-eye">Día 7 · Descanso sagrado</div>
+    <div class="ph-title">Do<em>mingo</em></div>
+    <div class="ph-desc">Día de descanso completo. El video del domingo ya está programado y se publicó automáticamente. Tú descansas.</div>
+    <div class="tags"><span class="tag tv">🌿 Descanso total</span><span class="tag tt">✡ Tiempo espiritual</span><span class="tag tn">👫 Pareja</span></div>
+  </div>
+
+  <div class="rest-banner">
+    <span class="rb-sym">🔯</span>
+    <div class="rb-title">Hoy no hay proyecto</div>
+    <div class="rb-sub">El video ya se publicó solo a las 9am. El Árbol de la Vida tiene 10 Sefirot — y la décima, Maljut, es el descanso en el mundo físico. Honra ese ciclo.</div>
+  </div>
+
+  <div class="grp">
+    <div class="grp-lbl">☀️ Tu día libre</div>
+    <div class="blk bk-rest"><div class="blk-time"><div class="bt-m">~8am</div></div><div class="blk-body"><div class="blk-title">☀️ Despertar natural</div><div class="blk-detail">Sin alarma. El cuerpo decide.</div></div></div>
+    <div class="blk bk-morn"><div class="blk-time"><div class="bt-m">–</div></div><div class="blk-body"><div class="blk-title">🍳 Desayuno especial de domingo</div><div class="blk-detail">El más tranquilo de la semana. Con pareja, con café, sin afán.</div></div></div>
+    <div class="blk bk-rest"><div class="blk-time"><div class="bt-m">–</div></div><div class="blk-body"><div class="blk-title">✡ Tiempo espiritual / Kabbalah personal</div><div class="blk-detail">Lectura del Zohar, meditación con las letras hebreas, estudio personal de las Sefirot. Este tiempo alimenta el contenido que creas — no es trabajo, es fuente. Los mejores temas del canal nacen aquí.</div></div></div>
+    <div class="blk bk-rest"><div class="blk-time"><div class="bt-m">–</div></div><div class="blk-body"><div class="blk-title">🌿 Pareja, naturaleza, familia</div><div class="blk-detail">Caminen, salgan, descansen. Sin pantallas de trabajo.</div></div></div>
+    <div class="blk bk-morn"><div class="blk-time"><div class="bt-m">–</div></div><div class="blk-body"><div class="blk-title">🍽 Almuerzo grande de domingo</div><div class="blk-detail">El más importante de la semana. Cocinen juntos o pidan domicilio. Sin prisa.</div></div></div>
+    <div class="blk bk-rest"><div class="blk-time"><div class="bt-m">–</div></div><div class="blk-body"><div class="blk-title">🛋 Tarde libre total</div><div class="blk-detail">Siesta, serie, lo que quieran. Ninguna obligación.</div></div></div>
+    <div class="blk bk-night"><div class="blk-time"><div class="bt-m">~6pm</div><div class="bt-d">30 min</div></div><div class="blk-body">
+      <div class="blk-title">📱 Única revisión del día (30 min)</div>
+      <div class="blk-detail">Responde comentarios del video publicado hoy. Revisa ventas en Hotmart. Cierra las apps. Eso es todo.</div>
+      <div class="co co-violet">Esta es la única actividad de proyecto del domingo. 30 minutos, no más. Ein Sof también descansa — y de ese descanso nace la creación.</div>
+    </div></div>
+    <div class="blk bk-night"><div class="blk-time"><div class="bt-m">~6:30</div><div class="bt-d">20 min</div></div><div class="blk-body"><div class="blk-title">📋 Prepara la semana (en papel)</div><div class="blk-detail">Escribe los 2 temas Kabbalah que quieres explorar esta semana. Deja la ropa y el área de trabajo listos. Prepara el desayuno del lunes. Eso es todo.</div></div></div>
+    <div class="blk bk-rest"><div class="blk-time"><div class="bt-m">~9:30</div><div class="bt-d">8.5h</div></div><div class="blk-body"><div class="blk-title">😴 Sueño largo</div><div class="blk-detail">El lunes empieza a las 5:45am. Entra descansado.</div></div></div>
+  </div>
+  <div class="verse"><div class="verse-hb">מַלְכוּת</div><div class="verse-text">"Maljut — el Reino — es donde la luz divina se manifiesta en el mundo físico. Es el descanso que completa el ciclo del Árbol."</div><div class="verse-ref">— Zohar · Parshat Bereshit</div></div>
+</div></div>
+
+<!-- REFERENCIA -->
+<div class="page" id="page-ref"><div class="w">
+  <div class="ph">
+    <div class="ph-eye">Panel de referencia rápida</div>
+    <div class="ph-title">Refe<em>rencia</em></div>
+    <div class="ph-desc">Mapa completo de la semana, prompts listos y guía de publicación por plataforma.</div>
+  </div>
+
+  <div class="cm">
+    <div class="cm-title">Mapa de contenido semanal</div>
+    <div class="cm-row"><div class="cm-day">Lunes</div><div class="cm-items"><strong>Mañana:</strong> Investigación Grok Kabbalah + guión largo #1 + MP3<br><strong>Tarde:</strong> Clips Veo 3 (estética Kabbalah) + Hailuo + guión Short #2 + MP3 Short #2<br><strong>Almuerzo trabajo:</strong> <span style="color:var(--gold2)">📤 Short #1 → TikTok + YT + FB + IG</span></div></div>
+    <div class="cm-row"><div class="cm-day">Martes</div><div class="cm-items"><strong>Mañana:</strong> Edición CapCut largo #1 (estética Kabbalah)<br><strong>Tarde:</strong> Finalizar largo #1 + miniatura Kabbalah + montar Short #2<br><strong>Almuerzo:</strong> <span style="color:var(--gold2)">📤 Short #2 → TikTok + YT + FB + IG</span></div></div>
+    <div class="cm-row"><div class="cm-day">Miércoles</div><div class="cm-items"><strong>Mañana:</strong> <span style="color:var(--gold2)">📤 Largo #1 → YouTube + Facebook</span><br><strong>Tarde:</strong> Engagement + guión largo #2 + MP3 + montar Short #3 + clips Veo 3 largo #2<br><strong>Almuerzo:</strong> <span style="color:var(--gold2)">📤 Short #3 → TikTok + YT + FB + IG</span></div></div>
+    <div class="cm-row"><div class="cm-day">Jueves</div><div class="cm-items"><strong>Mañana:</strong> Edición largo #2 + guión Short #4 + MP3<br><strong>Tarde:</strong> Miniatura #2 + montar Short #4 + post Grupo FB Kabbalah + guión Short #5 + MP3<br><strong>Almuerzo:</strong> <span style="color:var(--gold2)">📤 Short #4 → TikTok + YT + FB + IG</span></div></div>
+    <div class="cm-row"><div class="cm-day">Viernes</div><div class="cm-items"><strong>Mañana:</strong> <span style="color:var(--gold2)">📤 Largo #2 → YouTube + Facebook</span> + montar Short #5<br><strong>Tarde:</strong> Métricas + miniatura mejorada + guión Short #6 + MP3 + montar Short #6<br><strong>Almuerzo:</strong> <span style="color:var(--gold2)">📤 Short #5 → TikTok + YT + FB + IG</span></div></div>
+    <div class="cm-row"><div class="cm-day">Sábado</div><div class="cm-items"><strong>Mañana:</strong> <span style="color:var(--gold2)">📤 Short #6 → TikTok + YT + FB + IG</span> + programar video domingo<br><strong>Tarde:</strong> Hogar + cocina por tandas + descanso pareja</div></div>
+    <div class="cm-row"><div class="cm-day">Domingo</div><div class="cm-items"><span style="color:var(--gold2)">📤 Largo extra (programado el sábado → se publica solo a las 9am)</span><br>Descanso total · 30 min comentarios al final de la tarde · 20 min preparar semana</div></div>
+  </div>
+
+  <div class="cm">
+    <div class="cm-title">Resumen de producción semanal</div>
+    <div class="cm-row"><div class="cm-day" style="color:#FF5858">YouTube</div><div class="cm-items">2–3 videos largos · 6 Shorts · todos con estética y terminología Kabbalah</div></div>
+    <div class="cm-row"><div class="cm-day" style="color:#48D8D0">TikTok</div><div class="cm-items">6 Shorts independientes (+60 seg para Creator Rewards) · gancho hebreo/Kabbalah en cada uno</div></div>
+    <div class="cm-row"><div class="cm-day" style="color:#6888F0">Facebook</div><div class="cm-items">2 videos largos + 6 Reels + 1 reflexión semanal en el Grupo Kabbalah con link Hotmart</div></div>
+    <div class="cm-row"><div class="cm-day" style="color:#D860D0">Instagram</div><div class="cm-items">6 Reels (mismo archivo TikTok sin marca de agua)</div></div>
+    <div class="cm-row"><div class="cm-day" style="color:var(--green)">Hotmart</div><div class="cm-items">Link activo en: bio TikTok + bio IG + descripciones YT + comentario fijado YT + grupo FB + post jueves</div></div>
+  </div>
+
+  <div class="cm">
+    <div class="cm-title">Referencia de prompts rápida</div>
+    <div class="cm-row"><div class="cm-day">Grok #1</div><div class="cm-items"><strong>Investigación semanal Kabbalah</strong> · lunes mañana · 5 temas + 4 Shorts + hashtags + ángulo puente</div></div>
+    <div class="cm-row"><div class="cm-day">Grok #2</div><div class="cm-items"><strong>Guión largo 6 min Kabbalah</strong> · gancho misterioso + Sefirá/concepto + aplicación práctica + CTA</div></div>
+    <div class="cm-row"><div class="cm-day">Grok #3</div><div class="cm-items"><strong>Guión Short 60 seg Kabbalah</strong> · secreto ancestral + nombre hebreo + CTA bio</div></div>
+    <div class="cm-row"><div class="cm-day">Veo 3</div><div class="cm-items">8 prompts: árbol dorado / sefirot esferas / letras hebreas / Ein Sof luz / Zohar libro / árbol cósmico / transformación / Kéter corona</div></div>
+    <div class="cm-row"><div class="cm-day">Hailuo</div><div class="cm-items">3 prompts verticales: letra hebrea materializa / esfera sefirot pulsa / árbol de la vida vertical</div></div>
+    <div class="cm-row"><div class="cm-day">ElevenLabs</div><div class="cm-items">Velocidad 0.80x largo (misterioso) · 0.85x Shorts · Alterna: masculina semana impar / femenina semana par</div></div>
+  </div>
+
+  <div class="co co-rose">
+    <strong>⚠ Sin marca de agua entre plataformas.</strong> Exporta siempre desde CapCut limpio. Facebook, Instagram y YouTube penalizan videos con logo de TikTok.
+  </div>
+  <div class="co co-violet" style="margin-top:10px;">
+    <strong>🔯 Los Shorts Kabbalah son independientes del largo.</strong> Cada uno tiene su propio tema (Sefirá, letra hebrea, concepto del Zohar), su propio guión generado en Grok, y su audio en ElevenLabs. No son recortes — son piezas de enseñanza autónomas. Eso multiplica el alcance sin duplicar la producción mayor.
+  </div>
+  <div class="co co-gold" style="margin-top:10px;">
+    <strong>💡 Estrategia de progresión temática.</strong> Ve explorando las 10 Sefirot en orden descendente a lo largo de las semanas: Kéter → Jojmá → Biná → Jésed → Gevurá → Tiferet → Nétzaj → Hod → Yesod → Maljut. Cada una es un video largo + 4 Shorts. Eso es contenido para 10 semanas completas sin repetir tema.
+  </div>
+
+  <div class="verse"><div class="verse-hb">אֵין סוֹף</div><div class="verse-text">"Ein Sof — el Infinito — no tiene principio ni fin. De su contracción nació el espacio. De ese espacio, la creación. De la creación, tú."</div><div class="verse-ref">— Etz Chaim · Hayyim Vital</div></div>
+</div></div>
+
+<!-- SEFIROT -->
+<div class="page" id="page-sefirot"><div class="w">
+  <div class="ph">
+    <div class="ph-eye">Banco de temas · Árbol de la Vida</div>
+    <div class="ph-title">Las 10 <em>Sefirot</em></div>
+    <div class="ph-desc">Tu banco de contenido para 10+ semanas. Cada Sefirá es un video largo + 4 Shorts independientes. Avanza en orden descendente por el Árbol.</div>
+  </div>
+
+  <div class="co co-gold" style="margin-bottom:20px;">
+    <strong>💡 Estrategia:</strong> Una Sefirá por semana = 10 semanas de contenido sin repetir tema. Después puedes profundizar en las letras hebreas (22 semanas más), los 72 nombres de Dios, el Zohar, el Tikún, y la Guematría. Tienes material para años.
+  </div>
+
+  <div class="sefira-grid">
+    <div class="sefira-card">
+      <div class="sf-hb">כֶּתֶר</div>
+      <div class="sf-name">KÉTER · La Corona</div>
+      <div class="sf-desc">La voluntad divina pura. El punto antes de la creación. La esencia sin forma. Representa el propósito de vida más elevado.</div>
+      <div class="sf-topic">🎯 Temas: propósito de vida · voluntad divina · el yo superior · el vacío creativo</div>
+    </div>
+    <div class="sefira-card">
+      <div class="sf-hb">חָכְמָה</div>
+      <div class="sf-name">JOJMÁ · La Sabiduría</div>
+      <div class="sf-desc">El primer destello de luz. La idea antes del pensamiento. La intuición pura. El principio masculino del cosmos.</div>
+      <div class="sf-topic">🎯 Temas: intuición · creatividad · el momento de inspiración · sabiduría ancestral</div>
+    </div>
+    <div class="sefira-card">
+      <div class="sf-hb">בִּינָה</div>
+      <div class="sf-name">BINÁ · El Entendimiento</div>
+      <div class="sf-desc">La madre divina. Transforma el destello de Jojmá en comprensión. La inteligencia cósmica. El principio femenino.</div>
+      <div class="sf-topic">🎯 Temas: comprensión profunda · el cerebro izquierdo · ciclos de vida · la madre universal</div>
+    </div>
+    <div class="sefira-card">
+      <div class="sf-hb">חֶסֶד</div>
+      <div class="sf-name">JÉSED · La Misericordia</div>
+      <div class="sf-desc">La bondad infinita. El amor que fluye sin condición. La expansión divina. Asociada a Abraham y Júpiter.</div>
+      <div class="sf-topic">🎯 Temas: amor incondicional · abundancia · generosidad · las relaciones sanas</div>
+    </div>
+    <div class="sefira-card">
+      <div class="sf-hb">גְּבוּרָה</div>
+      <div class="sf-name">GEVURÁ · La Fortaleza</div>
+      <div class="sf-desc">El juicio y la disciplina divina. La fuerza que pone límites. El poder de decir no. Asociada a Marte.</div>
+      <div class="sf-topic">🎯 Temas: límites sanos · disciplina espiritual · el poder del no · justicia divina</div>
+    </div>
+    <div class="sefira-card">
+      <div class="sf-hb">תִּפְאֶרֶת</div>
+      <div class="sf-name">TIFERET · La Belleza</div>
+      <div class="sf-desc">El corazón del Árbol. El equilibrio perfecto entre la misericordia y el juicio. La armonía. Asociada al Sol.</div>
+      <div class="sf-topic">🎯 Temas: equilibrio interior · belleza espiritual · el corazón · las relaciones armónicas</div>
+    </div>
+    <div class="sefira-card">
+      <div class="sf-hb">נֶצַח</div>
+      <div class="sf-name">NÉTZAJ · La Victoria</div>
+      <div class="sf-desc">La eternidad y la perseverancia. La energía creativa y artística. La emoción divina. Asociada a Venus.</div>
+      <div class="sf-topic">🎯 Temas: perseverancia · creatividad artística · la música sagrada · las emociones</div>
+    </div>
+    <div class="sefira-card">
+      <div class="sf-hb">הוֹד</div>
+      <div class="sf-name">HOD · El Esplendor</div>
+      <div class="sf-desc">La gloria y la reverencia. El lenguaje y la comunicación sagrada. La rendición espiritual. Asociada a Mercurio.</div>
+      <div class="sf-topic">🎯 Temas: comunicación sagrada · las palabras tienen poder · el lenguaje hebreo · la rendición</div>
+    </div>
+    <div class="sefira-card">
+      <div class="sf-hb">יְסוֹד</div>
+      <div class="sf-name">YESOD · El Fundamento</div>
+      <div class="sf-desc">El canal que une los mundos superiores con Maljut. La energía sexual sagrada. El vínculo. Asociada a la Luna.</div>
+      <div class="sf-topic">🎯 Temas: conexión cuerpo-alma · la energía vital · el Tikún sexual · los sueños</div>
+    </div>
+    <div class="sefira-card">
+      <div class="sf-hb">מַלְכוּת</div>
+      <div class="sf-name">MALJUT · El Reino</div>
+      <div class="sf-desc">La décima Sefirá. El mundo físico. Donde la luz divina se manifiesta en materia. La Shejiná — la presencia divina en la Tierra.</div>
+      <div class="sf-topic">🎯 Temas: el dinero y lo sagrado · la manifestación · el mundo físico como espejo · la Shejiná</div>
+    </div>
+  </div>
+
+  <div class="cm" style="margin-top:8px;">
+    <div class="cm-title">Otros bancos de temas Kabbalah (contenido para meses)</div>
+    <div class="cm-row"><div class="cm-day" style="color:var(--violet2)">Ein Sof</div><div class="cm-items">El Dios infinito · el Tzimtzum (contracción) · la creación del universo · el Big Bang cabalístico · los 4 mundos (Atzilut, Beriá, Yetzirá, Asiá)</div></div>
+    <div class="cm-row"><div class="cm-day" style="color:var(--violet2)">Zohar</div><div class="cm-items">Qué es el Zohar · Rabbi Shimón bar Yojai · los secretos del alma · el Tikún Olam (reparación del mundo) · la reencarnación en la Kabbalah</div></div>
+    <div class="cm-row"><div class="cm-day" style="color:var(--violet2)">Letras Hebreas</div><div class="cm-items">Alef y el origen · Bet y la creación · las 3 letras madre (Alef, Mem, Shin) · el poder de tu nombre en hebreo · la Guematría de tu nombre</div></div>
+    <div class="cm-row"><div class="cm-day" style="color:var(--violet2)">Guematría</div><div class="cm-items">Numerología cabalística · los 22 arquetipos · el número de tu nombre · el 18 (Chai = vida) · el significado del 36 en Kabbalah</div></div>
+    <div class="cm-row"><div class="cm-day" style="color:var(--violet2)">Tikún</div><div class="cm-items">Tu misión de vida según Kabbalah · cómo identificar tu Tikún · los bloques repetitivos · la corrección del alma · las vidas pasadas</div></div>
+    <div class="cm-row"><div class="cm-day" style="color:var(--violet2)">72 Nombres</div><div class="cm-items">Los 72 nombres de Dios · cómo meditar con ellos · el nombre para la protección · el nombre para la abundancia · el nombre para el amor</div></div>
+  </div>
+
+  <div class="verse"><div class="verse-hb">יְסוֹד</div><div class="verse-text">"Yesod es el canal. Todo lo que fluye de los mundos superiores pasa por él antes de llegar a Maljut — antes de llegar a tu vida."</div><div class="verse-ref">— Etz Chaim · Árbol de la Vida</div></div>
+</div></div>
+
+<script>
+function show(day, btn) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('on'));
+  document.querySelectorAll('.nd').forEach(b => b.classList.remove('active'));
+  document.getElementById('page-' + day).classList.add('on');
+  btn.classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function cp(btn) {
+  const text = btn.nextElementSibling.textContent;
+  navigator.clipboard.writeText(text).then(() => {
+    btn.textContent = '✓ LISTO';
+    btn.classList.add('ok');
+    setTimeout(() => { btn.textContent = 'COPIAR'; btn.classList.remove('ok'); }, 2000);
+  });
+}
+</script>
+</body>
+</html>
